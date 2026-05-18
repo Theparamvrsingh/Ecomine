@@ -173,11 +173,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Function to safely convert strings to floats, handling invalid inputs
-def safe_float_conversion(value):
+def safe_float_conversion(value, default_val=0.0):
     try:
+        if isinstance(value, list):
+            value = value[0]
+        if value is None or value == '':
+            return default_val
         return float(value)
     except (ValueError, TypeError):
-        return None
+        return default_val
 
 # Function to calculate carbon reduction based on trees planted
 def calculate_tree_carbon_offset(num_trees):
@@ -186,16 +190,16 @@ def calculate_tree_carbon_offset(num_trees):
 # Access query parameters using the updated method
 params = st.query_params
 
-# Extract query parameters or default to empty string
-coalQty = safe_float_conversion(params.get('coalQty', ''))
-elecConsump = safe_float_conversion(params.get('elecConsump', ''))
-transportation = safe_float_conversion(params.get('transportation', ''))
-deforestedArea = safe_float_conversion(params.get('deforestedArea', ''))
-coalf = safe_float_conversion(params.get('coalf', ''))
-elecf = safe_float_conversion(params.get('elecf', ''))
-transf = safe_float_conversion(params.get('transf', ''))
-deforestf = safe_float_conversion(params.get('deforestf', ''))
-total = safe_float_conversion(params.get('total', ''))
+# Extract query parameters or default to beautiful sample values
+coalQty = safe_float_conversion(params.get('coalQty', ''), default_val=12500.0)
+elecConsump = safe_float_conversion(params.get('elecConsump', ''), default_val=50000.0)
+transportation = safe_float_conversion(params.get('transportation', ''), default_val=850.0)
+deforestedArea = safe_float_conversion(params.get('deforestedArea', ''), default_val=12.0)
+coalf = safe_float_conversion(params.get('coalf', ''), default_val=13.7625)
+elecf = safe_float_conversion(params.get('elecf', ''), default_val=35.8000)
+transf = safe_float_conversion(params.get('transf', ''), default_val=5.6700)
+deforestf = safe_float_conversion(params.get('deforestf', ''), default_val=6.6060)
+total = safe_float_conversion(params.get('total', ''), default_val=61.8385)
 
 # Create two columns for the layout
 left_column, right_column = st.columns([2.1, 1.2])

@@ -51,6 +51,11 @@
 
 <div class="auth-container">
   <h2>Login</h2>
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger text-center py-2" role="alert" style="font-size: 0.9rem; margin-bottom: 1rem; border-radius: 4px;">
+      <%= error %>
+    </div>
+  <% } %>
   <form action="/login" method="POST">
     <input type="email" name="email" placeholder="Email" required />
     <input type="password" name="password" placeholder="Password" required />

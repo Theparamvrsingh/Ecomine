@@ -3,7 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { CreditListing, Transaction, Cart } = require('../models/credit');
 const User = require('../models/user');
-const isAuthenticated = require('../auth/auth');
+const authRoutes = require('../auth/auth');
+const isAuthenticated = authRoutes.isAuthenticated;
 
 router.get('/', isAuthenticated, async (req, res) => {
   try {

@@ -3,6 +3,7 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const Mines = require('./models/mines');
 const maptilerClient = require("@maptiler/client");
+const User = require('./models/user');
 
 if (process.env.NODE_ENV != 'production') {
   require('dotenv').config();
@@ -10,7 +11,7 @@ if (process.env.NODE_ENV != 'production') {
 
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
-mongoose.connect('mongodb://localhost:27017/mines', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/ecomine', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
       console.log("MONGO CONNECTION OPEN!!!");
   })
@@ -25,6 +26,18 @@ fs.createReadStream('mine_data2.csv')
   .pipe(csv())
   .on('data', (data) => results.push(data))
   .on('end', async () => {
+    let user = await User.findOne({ email: 'seed@ecomine.com' });
+    if (!user) {
+      user = new User({
+        username: 'seeduser',
+        email: 'seed@ecomine.com',
+        password: 'password123',
+        coinBalance: 1000
+      });
+      await user.save();
+      console.log('Created seed user: seeduser');
+    }
+
     for (let row of results) {
       try {
         const {
@@ -67,7 +80,8 @@ fs.createReadStream('mine_data2.csv')
           description: description || '',
           result: {
             totalFootprint: parsedCarbonFootprint
-          }
+          },
+          user: user._id
         });
 
         await mine.save();

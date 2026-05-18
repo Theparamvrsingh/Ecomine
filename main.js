@@ -38,7 +38,8 @@ const User = require('./models/user');
 const places = require('./data/india-places');
 const marketplaceRoutes = require('./marketplace/marketplace');
 const authRoutes = require('./auth/auth');
-const isAuthenticated = require('./auth/auth');
+const isAuthenticated = authRoutes.isAuthenticated;
+
 
 app.engine('ejs', ejsMate);
 app.set("view engine", "ejs");
@@ -87,7 +88,10 @@ app.use(async (req, res, next) => {
 });
 
 // MongoDB connection with retry logic
+let isConnecting = false;
 const connectWithRetry = () => {
+    if (isConnecting) return;
+    isConnecting = true;
     const mongoUrl = process.env.MONGODB_URL || 'mongodb+srv://newcluster:newcluster@cluster0.kxfq0rm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
     console.log('Attempting to connect to MongoDB at:', mongoUrl.replace(/\/\/[^@]+@/, '//****:****@')); // Hide credentials in logs
     
@@ -97,9 +101,11 @@ const connectWithRetry = () => {
     })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!");
+        isConnecting = false;
     })
     .catch(err => {
         console.error("MongoDB Connection Error:", err.message);
+        isConnecting = false;
         console.log("Retrying in 5 seconds...");
         setTimeout(connectWithRetry, 5000);
     });
@@ -111,8 +117,7 @@ mongoose.connection.on('error', err => {
 });
 
 mongoose.connection.on('disconnected', () => {
-    console.log('MongoDB disconnected. Attempting to reconnect...');
-    connectWithRetry();
+    console.log('MongoDB disconnected.');
 });
 
 mongoose.connection.on('connected', () => {

@@ -3,13 +3,15 @@ const router = express.Router();
 const User = require('../models/user');
 
 // Middleware to check if user is authenticated
-module.exports = function isAuthenticated(req, res, next) {
+function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
   } else {
     res.redirect('/login');
   }
-};
+}
+
+router.isAuthenticated = isAuthenticated;
 
 // GET: Display login page
 router.get('/login', (req, res) => {
@@ -35,7 +37,14 @@ router.post('/login', async (req, res) => {
     // Store user ID in session
     req.session.userId = user._id;
 
-    res.redirect('/home');
+    // Explicitly save the session to prevent local race conditions
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.render('login', { error: 'An error occurred. Please try again.' });
+      }
+      res.redirect('/home');
+    });
   } catch (err) {
     console.error(err);
     res.render('login', { error: 'An error occurred. Please try again.' });
@@ -70,7 +79,14 @@ router.post('/signup', async (req, res) => {
     // Store user ID in session
     req.session.userId = user._id;
 
-    res.redirect('/home');
+    // Explicitly save the session to prevent local race conditions
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.render('signup', { error: 'An error occurred. Please try again.' });
+      }
+      res.redirect('/home');
+    });
   } catch (err) {
     console.error(err);
     res.render('signup', { error: 'An error occurred. Please try again.' });
