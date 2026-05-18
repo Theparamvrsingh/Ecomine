@@ -25,13 +25,13 @@ router.post('/login', async (req, res) => {
     // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.render('login', { error: 'Invalid email or password' });
+      return res.render('login', { error: 'User not found. Please sign up!' });
     }
 
     // Check if password matches
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.render('login', { error: 'Invalid email or password' });
+      return res.render('login', { error: 'Incorrect password.' });
     }
 
     // Store user ID in session
@@ -41,13 +41,13 @@ router.post('/login', async (req, res) => {
     req.session.save((err) => {
       if (err) {
         console.error('Session save error:', err);
-        return res.render('login', { error: 'An error occurred. Please try again.' });
+        return res.render('login', { error: 'Session save error: ' + err.message });
       }
       res.redirect('/home');
     });
   } catch (err) {
     console.error(err);
-    res.render('login', { error: 'An error occurred. Please try again.' });
+    res.render('login', { error: 'Internal Error: ' + err.message });
   }
 });
 
