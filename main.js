@@ -60,7 +60,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ 
-        mongoUrl: process.env.MONGODB_URL || 'mongodb+srv://newcluster:newcluster@cluster0.kxfq0rm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+        mongoUrl: process.env.MONGODB_URL || 'mongodb+srv://ecomineuser:Paramveer%40143@cluster0.gsaotx0.mongodb.net/ecomine?retryWrites=true&w=majority',
         touchAfter: 24 * 3600
     }),
     cookie: { 
@@ -93,7 +93,7 @@ let isConnecting = false;
 const connectWithRetry = () => {
     if (isConnecting) return;
     isConnecting = true;
-    const mongoUrl = process.env.MONGODB_URL || 'mongodb+srv://newcluster:newcluster@cluster0.kxfq0rm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    const mongoUrl = process.env.MONGODB_URL || 'mongodb+srv://ecomineuser:Paramveer%40143@cluster0.gsaotx0.mongodb.net/ecomine?retryWrites=true&w=majority';
     console.log('Attempting to connect to MongoDB at:', mongoUrl.replace(/\/\/[^@]+@/, '//****:****@')); // Hide credentials in logs
     
     mongoose.connect(mongoUrl, { 
