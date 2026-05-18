@@ -247,7 +247,7 @@ with left_column:
                 st.markdown("""
                     <ul class="buton">
                         <li>
-                            <a href="http://localhost:3000/marketplace">
+                            <a href="https://latestecomine.onrender.com/marketplace">
                                 <button class="learn-more-btn">
                                     Visit Carbon Credit Marketplace
                                 </button>
@@ -268,7 +268,7 @@ with left_column:
                 st.markdown("""
                     <ul class="buton">
                         <li>
-                            <a href="http://localhost:3000/methane">
+                            <a href="https://latestecomine.onrender.com/methane">
                                 <button class="learn-more-btn">
                                     Learn More
                                 </button>
@@ -309,17 +309,17 @@ st.write("- [Implement Energy-Efficient Practices](#)")
 st.markdown(
     """
     <div style="text-align: center; margin-top: 30px;">
-        <a href="http://localhost:3000/calculate">
+        <a href="https://latestecomine.onrender.com/calculate">
             <button style="background-color: #f39c12; color: black; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer;">
                 Calculate Again
             </button>
         </a>
-        <a href="http://localhost:3000/home">
+        <a href="https://latestecomine.onrender.com/home">
             <button style="background-color: #3498db; color: black; border: none; padding: 10px 48px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
                 Home
             </button>
         </a>
-        <a href="http://localhost:3000/index">
+        <a href="https://latestecomine.onrender.com/index">
             <button style="background-color: #188753; color: black; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
                 Dashboard
             </button>
